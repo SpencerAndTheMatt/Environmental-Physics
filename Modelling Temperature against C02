@@ -1,0 +1,57 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+@SpencerAndTheMatt
+"""
+
+#Define imports
+import numpy as np
+import matplotlib.pyplot as plt
+
+#Define curves
+class Curves: #Curves class to keep the functions neat
+    
+    def C02(x): #C02 curve
+        return ((12*(x**2))/625) + ((16*x)/25) + (332)
+    
+    def Temperature(x): #This function yields the temperature when given the C02
+        return Curves.k2()*np.log(x)
+    
+    def k2(): #The constant of proportionality. This function is purely made to be called upon by the Temperature function
+        return 14/np.log(325)
+    
+#Define array
+x_array = np.arange(0, 151, 1) #Years array, year zero (1970) to 150 (2120)
+global y_array #Make y_array global so that the below for loop can interact with it
+y_array = [] #Empty array, made for the purposes of appending within the for loop
+
+#Fill y array
+for i in x_array: #Take the values in the years array, and populate y_array using the C02 function
+    y_array.append(Curves.C02(i))
+
+#Plotting C02 ppm per year (This plot is not shown on the report, purely for our own understanding)
+plt.figure(1)
+plt.plot(x_array, y_array, label='CO2 ppm per year')
+plt.title('Model of CO2 ppm increase over 150 years')
+plt.xlabel('Year');plt.ylabel('CO2 (parts per million)')
+plt.legend(loc='best')
+
+#Plotting temperature using the CO2 values already found
+plt.figure(2)
+plt.plot(x_array, Curves.Temperature(y_array), label='Temperature v C02')
+plt.title('Model of temperature increase with C02 increase over 150 years')
+plt.xlabel('year');plt.ylabel('temp')
+plt.legend(loc='best')
+
+#Plotting temperature against year
+plt.figure(3)
+plt.plot(y_array, Curves.Temperature(y_array))
+labels = np.linspace(y_array[0], y_array[-1], 9)
+my_xticks = np.arange(1970, 2131, 20)
+plt.xticks(labels, my_xticks)
+plt.xlabel('Year')
+plt.ylabel('Temperature (Celcius)')
+plt.title('Graph of projected temperature change with year')
+
+
